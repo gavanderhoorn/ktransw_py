@@ -126,7 +126,7 @@ def main():
             args.ktrans_args[i] = os.path.abspath(args.ktrans_args[i])
 
     logger.debug("Parsed args:")
-    for key, val in vars(args).iteritems():
+    for key, val in vars(args).items():
         if type(val) == list:
             logger.debug("  {0}:".format(key))
             for item in val:
@@ -312,7 +312,7 @@ def main():
             # TODO: we loose stdout/stderr interleaving here
             # TODO: the error messages refer to lines in the temporary,
             # preprocessed KAREL source file, not the original one.
-            sys.stdout.write(pstdout.replace(dname, os.path.dirname(kl_file)) + '\n')
+            sys.stdout.write(pstdout.decode('utf-8').replace(dname, os.path.dirname(kl_file)) + '\n')
 
         sys.exit(ktrans_proc.returncode)
 
@@ -326,7 +326,7 @@ def get_includes_from_file(fname):
 GPP_OP_ENTER='1'
 GPP_OP_EXIT='2'
 def scan_for_inc_stmts(text):
-    matches = re.findall(r'^-- INCLUDE_MARKER (\d+):(\S+):(\d+|)', text, re.MULTILINE)
+    matches = re.findall(r'^-- INCLUDE_MARKER (\d+):(\S+):(\d+|)', text.decode('utf-8'), re.MULTILINE)
     incs = []
     for (line_nr, fpath, op) in matches:
         if (op == GPP_OP_ENTER) and (fpath not in incs):
